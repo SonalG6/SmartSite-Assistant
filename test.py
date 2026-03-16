@@ -1,10 +1,13 @@
 from scrapper import WebsiteScraper
 from document_processor import DocumentProcessor
 from vector_store import VectorStore
+from rag_answer_generator import RAGAnswerGenerator
+
 
 scraper = WebsiteScraper()
 processor = DocumentProcessor()
 vector_store = VectorStore()
+rag = RAGAnswerGenerator()
 
 url = input("Enter website URL: ")
 
@@ -14,13 +17,13 @@ chunks = processor.process_documents(docs)
 
 vector_store.build_vector_store(chunks)
 
-query = input("Ask a question about the website: ")
+while True:
 
-results = vector_store.search(query)
+    question = input("\nAsk a question about the website: ")
 
-print("\nRelevant results:\n")
+    retrieved_docs = vector_store.search(question)
 
-for r in results:
-    print("Source:", r["source"])
-    print(r["content"][:300])
-    print()
+    answer = rag.generate_answer(question, retrieved_docs)
+
+    print("\nAnswer:\n")
+    print(answer)

@@ -6,6 +6,6 @@ langchain-text-splitters
 sentence-transformers
 faiss-cpu
 streamlit
-google-generativeai
+groq
 requests
 numpy
