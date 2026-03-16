@@ -4,28 +4,20 @@ SmartSite Assistant is an RAG-based AI-powered system that converts any website 
 
 The project implements a Retrieval-Augmented Generation (RAG) pipeline to retrieve relevant information from the website and generate accurate responses grounded in the site's content while ensuring minimal latency.
 
-## Architecture
+## Architecture Diagram
 
-The system processes a website and builds a knowledge base using the following pipeline:
+```mermaid
+flowchart TD
+    A[User Input: Website URL] --> B[Website Crawling - Firecrawl]
+    B --> C[Content Extraction]
+    C --> D[Document Processing & Chunking]
+    D --> E[Embedding Generation - Sentence Transformers]
+    E --> F[Vector Database - FAISS]
+    F --> G[Semantic Retrieval]
+    G --> H[LLM Answer Generation]
+    H --> I[Final Response to User]
 
-User Input (Website URL)
-        ↓
-Website Crawling (Firecrawl)
-        ↓
-Content Extraction and Cleaning
-        ↓
-Text Chunking
-        ↓
-Embedding Generation
-        ↓
-Vector Storage (FAISS)
-        ↓
-Semantic Retrieval
-        ↓
-LLM Response Generation (Groq)
-        ↓
-Streamlit Chat Interface
-
+    
 ## Tech Stack
 
 - **Python** – Core programming language  
