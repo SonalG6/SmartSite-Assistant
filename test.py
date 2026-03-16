@@ -18,8 +18,15 @@ chunks = processor.process_documents(docs)
 vector_store.build_vector_store(chunks)
 
 while True:
+    try:
+        question = input("\nAsk a question about the website: ")
+    except EOFError:
+        print("\nInput stream ended. Exiting.")
+        break
 
-    question = input("\nAsk a question about the website: ")
+    if not question.strip() or question.strip().lower() in {"exit", "quit"}:
+        print("Exiting.")
+        break
 
     retrieved_docs = vector_store.search(question)
 
