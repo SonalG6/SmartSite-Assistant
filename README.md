@@ -15,32 +15,23 @@ The project implements a Retrieval-Augmented Generation (RAG) pipeline to retrie
 
 ## Project Architecture
 
-### Vertical Flow (GitHub Mermaid)
-
 ```mermaid
 flowchart TD
-    A[User enters website URL] --> B[WebsiteScraper.crawl_website]
-    B --> C{Pages collected?}
-    C -->|Yes| D[Documents list with source and content]
-    C -->|No| E[Fallback: scrape_website]
+    A[User provides a Website URL] --> B[Crawl and Scrape Website]
+    B --> C{Pages found?}
+    C -->|Yes| D[Collected Web Pages]
+    C -->|No| E[Fallback: Single-page scrape]
     E --> D
 
-    D --> F[DocumentProcessor.process_documents]
-    F --> G[RecursiveCharacterTextSplitter]
-    G --> H[Chunked documents]
+    D --> F[Split content into chunks]
+    F --> G[Generate text embeddings]
+    G --> H[Store in FAISS vector index]
 
-    H --> I[VectorStore.create_embeddings]
-    I --> J[SentenceTransformer all-MiniLM-L6-v2]
-    J --> K[VectorStore.build_vector_store]
-    K --> L[FAISS IndexFlatL2]
-
-    L --> M[User asks question in CLI chat]
-    M --> N[VectorStore.search top_k=3]
-    N --> O[Top relevant chunks]
-    O --> P[RAGAnswerGenerator.generate_answer]
-    P --> Q[OpenRouter Chat Completions API]
-    Q --> R[Answer printed to terminal]
-    R --> M
+    H --> I[User asks a question]
+    I --> J[Search for top relevant chunks]
+    J --> K[Send context and question to LLM]
+    K --> L[Answer returned to user]
+    L --> I
 ```
 
 ## Repository Structure
@@ -155,4 +146,3 @@ Answer:
 - Persist FAISS index to disk for reuse between sessions
 - Add source citation display in answers
 - Add unit/integration tests for each pipeline stage
-
